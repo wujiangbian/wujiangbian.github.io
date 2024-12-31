@@ -1,0 +1,617 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; --title-bar-height: 20px; }
+.mac-os-11 { --title-bar-height: 28px; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4, h5 { white-space: pre-wrap; }
+body { margin: 0px; padding: 0px; height: auto; inset: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 36px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+.typora-export .task-list-item input { pointer-events: none; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; image-orientation: from-image; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 4; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px; }
+thead, tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-fences-adv-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+svg { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li blockquote { margin: 1rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
+  #write { margin-top: 0px; border-color: transparent !important; padding-top: 0px !important; padding-bottom: 0px !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  .typora-export #write { break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  .is-mac table { break-inside: avoid; }
+  #write > p:nth-child(1) { margin-top: 0px; }
+  .typora-export-show-outline .typora-export-sidebar { display: none; }
+  figure { overflow-x: visible; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+#write.first-line-indent p > .md-image:only-child:not(.md-img-error) img { left: -2em; position: relative; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+.MathJax_ref { fill: currentcolor; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.reversefootnote { font-family: ui-monospace, sans-serif; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.6; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="flow"] svg, [lang="mermaid"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); }
+.md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
+.md-expand mark .md-meta { opacity: 0.3 !important; }
+mark .md-meta { color: rgb(0, 0, 0); }
+@media print {
+  .typora-export h1, .typora-export h2, .typora-export h3, .typora-export h4, .typora-export h5, .typora-export h6 { break-inside: avoid; }
+}
+.md-diagram-panel .messageText { stroke: none !important; }
+.md-diagram-panel .start-state { fill: var(--node-fill); }
+.md-diagram-panel .edgeLabel rect { opacity: 1 !important; }
+.md-fences.md-fences-math { font-size: 1em; }
+.md-fences-advanced:not(.md-focus) { padding: 0px; white-space: nowrap; border: 0px; }
+.md-fences-advanced:not(.md-focus) { background: inherit; }
+.typora-export-show-outline .typora-export-content { max-width: 1440px; margin: auto; display: flex; flex-direction: row; }
+.typora-export-sidebar { width: 300px; font-size: 0.8rem; margin-top: 80px; margin-right: 18px; }
+.typora-export-show-outline #write { --webkit-flex: 2; flex: 2 1 0%; }
+.typora-export-sidebar .outline-content { position: fixed; top: 0px; max-height: 100%; overflow: hidden auto; padding-bottom: 30px; padding-top: 60px; width: 300px; }
+@media screen and (max-width: 1024px) {
+  .typora-export-sidebar, .typora-export-sidebar .outline-content { width: 240px; }
+}
+@media screen and (max-width: 800px) {
+  .typora-export-sidebar { display: none; }
+}
+.outline-content li, .outline-content ul { margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; list-style: none; overflow-wrap: anywhere; }
+.outline-content ul { margin-top: 0px; margin-bottom: 0px; }
+.outline-content strong { font-weight: 400; }
+.outline-expander { width: 1rem; height: 1.42857rem; position: relative; display: table-cell; vertical-align: middle; cursor: pointer; padding-left: 4px; }
+.outline-expander::before { content: ""; position: relative; font-family: Ionicons; display: inline-block; font-size: 8px; vertical-align: middle; }
+.outline-item { padding-top: 3px; padding-bottom: 3px; cursor: pointer; }
+.outline-expander:hover::before { content: ""; }
+.outline-h1 > .outline-item { padding-left: 0px; }
+.outline-h2 > .outline-item { padding-left: 1em; }
+.outline-h3 > .outline-item { padding-left: 2em; }
+.outline-h4 > .outline-item { padding-left: 3em; }
+.outline-h5 > .outline-item { padding-left: 4em; }
+.outline-h6 > .outline-item { padding-left: 5em; }
+.outline-label { cursor: pointer; display: table-cell; vertical-align: middle; text-decoration: none; color: inherit; }
+.outline-label:hover { text-decoration: underline; }
+.outline-item:hover { border-color: rgb(245, 245, 245); background-color: var(--item-hover-bg-color); }
+.outline-item:hover { margin-left: -28px; margin-right: -28px; border-left: 28px solid transparent; border-right: 28px solid transparent; }
+.outline-item-single .outline-expander::before, .outline-item-single .outline-expander:hover::before { display: none; }
+.outline-item-open > .outline-item > .outline-expander::before { content: ""; }
+.outline-children { display: none; }
+.info-panel-tab-wrapper { display: none; }
+.outline-item-open > .outline-children { display: block; }
+.typora-export .outline-item { padding-top: 1px; padding-bottom: 1px; }
+.typora-export .outline-item:hover { margin-right: -8px; border-right: 8px solid transparent; }
+.typora-export .outline-expander::before { content: "+"; font-family: inherit; top: -1px; }
+.typora-export .outline-expander:hover::before, .typora-export .outline-item-open > .outline-item > .outline-expander::before { content: "−"; }
+.typora-export-collapse-outline .outline-children { display: none; }
+.typora-export-collapse-outline .outline-item-open > .outline-children, .typora-export-no-collapse-outline .outline-children { display: block; }
+.typora-export-no-collapse-outline .outline-expander::before { content: "" !important; }
+.typora-export-show-outline .outline-item-active > .outline-item .outline-label { font-weight: 700; }
+.md-inline-math-container mjx-container { zoom: 0.95; }
+mjx-container { break-inside: avoid; }
+.md-alert.md-alert-note { border-left-color: rgb(9, 105, 218); }
+.md-alert.md-alert-important { border-left-color: rgb(130, 80, 223); }
+.md-alert.md-alert-warning { border-left-color: rgb(154, 103, 0); }
+.md-alert.md-alert-tip { border-left-color: rgb(31, 136, 61); }
+.md-alert.md-alert-caution { border-left-color: rgb(207, 34, 46); }
+.md-alert { padding: 0px 1em; margin-bottom: 16px; color: inherit; border-left: 0.25em solid rgb(0, 0, 0); }
+.md-alert-text-note { color: rgb(9, 105, 218); }
+.md-alert-text-important { color: rgb(130, 80, 223); }
+.md-alert-text-warning { color: rgb(154, 103, 0); }
+.md-alert-text-tip { color: rgb(31, 136, 61); }
+.md-alert-text-caution { color: rgb(207, 34, 46); }
+.md-alert-text { font-size: 0.9rem; font-weight: 700; }
+.md-alert-text svg { fill: currentcolor; position: relative; top: 0.125em; margin-right: 1ch; overflow: visible; }
+.md-alert-text-container::after { content: attr(data-text); text-transform: capitalize; pointer-events: none; margin-right: 1ch; }
+
+
+:root {
+    --side-bar-bg-color: #fafafa;
+    --control-text-color: #777;
+}
+
+@include-when-export url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext);
+
+/* open-sans-regular - latin-ext_latin */
+  /* open-sans-italic - latin-ext_latin */
+    /* open-sans-700 - latin-ext_latin */
+    /* open-sans-700italic - latin-ext_latin */
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: "Open Sans","Clear Sans", "Helvetica Neue", Helvetica, Arial, 'Segoe UI Emoji', sans-serif;
+    color: rgb(51, 51, 51);
+    line-height: 1.6;
+}
+
+#write {
+    max-width: 860px;
+  	margin: 0 auto;
+  	padding: 30px;
+    padding-bottom: 100px;
+}
+
+@media only screen and (min-width: 1400px) {
+	#write {
+		max-width: 1024px;
+	}
+}
+
+@media only screen and (min-width: 1800px) {
+	#write {
+		max-width: 1200px;
+	}
+}
+
+#write > ul:first-child,
+#write > ol:first-child{
+    margin-top: 30px;
+}
+
+a {
+    color: #4183C4;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    position: relative;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    line-height: 1.4;
+    cursor: text;
+}
+h1:hover a.anchor,
+h2:hover a.anchor,
+h3:hover a.anchor,
+h4:hover a.anchor,
+h5:hover a.anchor,
+h6:hover a.anchor {
+    text-decoration: none;
+}
+h1 tt,
+h1 code {
+    font-size: inherit;
+}
+h2 tt,
+h2 code {
+    font-size: inherit;
+}
+h3 tt,
+h3 code {
+    font-size: inherit;
+}
+h4 tt,
+h4 code {
+    font-size: inherit;
+}
+h5 tt,
+h5 code {
+    font-size: inherit;
+}
+h6 tt,
+h6 code {
+    font-size: inherit;
+}
+h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+    border-bottom: 1px solid #eee;
+}
+h2 {
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+
+/*@media print {
+    .typora-export h1,
+    .typora-export h2 {
+        border-bottom: none;
+        padding-bottom: initial;
+    }
+
+    .typora-export h1::after,
+    .typora-export h2::after {
+        content: "";
+        display: block;
+        height: 100px;
+        margin-top: -96px;
+        border-top: 1px solid #eee;
+    }
+}*/
+
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+h4 {
+    font-size: 1.25em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+   font-size: 1em;
+    color: #777;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+table{
+    margin: 0.8em 0;
+}
+li>ol,
+li>ul {
+    margin: 0 0;
+}
+hr {
+    height: 2px;
+    padding: 0;
+    margin: 16px 0;
+    background-color: #e7e7e7;
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+}
+
+li p.first {
+    display: inline-block;
+}
+ul,
+ol {
+    padding-left: 30px;
+}
+ul:first-child,
+ol:first-child {
+    margin-top: 0;
+}
+ul:last-child,
+ol:last-child {
+    margin-bottom: 0;
+}
+blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding: 0 15px;
+    color: #777777;
+}
+blockquote blockquote {
+    padding-right: 0;
+}
+table {
+    padding: 0;
+    word-break: initial;
+}
+table tr {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 0;
+}
+table tr:nth-child(2n),
+thead {
+    background-color: #f8f8f8;
+}
+table th {
+    font-weight: bold;
+    border: 1px solid #dfe2e5;
+    border-bottom: 0;
+    margin: 0;
+    padding: 6px 13px;
+}
+table td {
+    border: 1px solid #dfe2e5;
+    margin: 0;
+    padding: 6px 13px;
+}
+table th:first-child,
+table td:first-child {
+    margin-top: 0;
+}
+table th:last-child,
+table td:last-child {
+    margin-bottom: 0;
+}
+
+.CodeMirror-lines {
+    padding-left: 4px;
+}
+
+.code-tooltip {
+    box-shadow: 0 1px 1px 0 rgba(0,28,36,.3);
+    border-top: 1px solid #eef2f2;
+}
+
+.md-fences,
+code,
+tt {
+    border: 1px solid #e7eaed;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    padding: 0;
+    padding: 2px 4px 0px 4px;
+    font-size: 0.9em;
+}
+
+code {
+    background-color: #f3f4f4;
+    padding: 0 2px 0 2px;
+}
+
+.md-fences {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 8px;
+    padding-bottom: 6px;
+}
+
+
+.md-task-list-item > input {
+  margin-left: -1.3em;
+}
+
+@media print {
+    html {
+        font-size: 13px;
+    }
+    pre {
+        page-break-inside: avoid;
+        word-wrap: break-word;
+    }
+}
+
+.md-fences {
+	background-color: #f8f8f8;
+}
+#write pre.md-meta-block {
+	padding: 1rem;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f7f7f7;
+    border: 0;
+    border-radius: 3px;
+    color: #777777;
+    margin-top: 0 !important;
+}
+
+.mathjax-block>.code-tooltip {
+	bottom: .375rem;
+}
+
+.md-mathjax-midline {
+    background: #fafafa;
+}
+
+#write>h3.md-focus:before{
+	left: -1.5625rem;
+	top: .375rem;
+}
+#write>h4.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h5.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+#write>h6.md-focus:before{
+	left: -1.5625rem;
+	top: .285714286rem;
+}
+.md-image>.md-meta {
+    /*border: 1px solid #ddd;*/
+    border-radius: 3px;
+    padding: 2px 0px 0px 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+.md-tag {
+    color: #a7a7a7;
+    opacity: 1;
+}
+
+.md-toc { 
+    margin-top:20px;
+    padding-bottom:20px;
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+#typora-quick-open {
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+}
+
+#typora-quick-open-item {
+    background-color: #FAFAFA;
+    border-color: #FEFEFE #e5e5e5 #e5e5e5 #eee;
+    border-style: solid;
+    border-width: 1px;
+}
+
+/** focus mode */
+.on-focus-mode blockquote {
+    border-left-color: rgba(85, 85, 85, 0.12);
+}
+
+header, .context-menu, .megamenu-content, footer{
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state{
+    visibility: visible;
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: #fafafa;
+    background-color: var(--side-bar-bg-color);
+}
+
+.mac-os #write{
+    caret-color: AccentColor;
+}
+
+.md-lang {
+    color: #b4654d;
+}
+
+/*.html-for-mac {
+    --item-hover-bg-color: #E6F0FE;
+}*/
+
+#md-notification .btn {
+    border: 0;
+}
+
+.dropdown-menu .divider {
+    border-color: #e5e5e5;
+    opacity: 0.4;
+}
+
+.ty-preferences .window-content {
+    background-color: #fafafa;
+}
+
+.ty-preferences .nav-group-item.active {
+    color: white;
+    background: #999;
+}
+
+.menu-item-container a.menu-style-btn {
+    background-color: #f5f8fa;
+    background-image: linear-gradient( 180deg , hsla(0, 0%, 100%, 0.8), hsla(0, 0%, 100%, 0)); 
+}
+
+
+
+</style><title>2023-2024happy new year</title>
+</head>
+<body class='typora-export os-windows'><div class='typora-export-content'>
+<div id='write'  class=''><h1 id='2023-2024-wujiangbian的电子产品年度总结'><span>2023-2024 wujiangbian的电子产品年度总结</span></h1><p><span>又到了一年的结尾了，朋友圈里都是朋友出去玩的照片和年度总结，作为一个临时抱佛脚的苦逼大学生，当然是在寝室里窝着复(摸)习(鱼)啦，所以闲着也是闲着，想着给自己也写一个年度总结吧，来总结一下这一年里捡到的垃圾，也作为我相对正式的第一篇博客。</span></p><div class='md-toc' mdtype='toc'><p class="md-toc-content" role="list"><span role="listitem" class="md-toc-item md-toc-h1" data-ref="n0"><a class="md-toc-inner" href="#2023-2024-wujiangbian的电子产品年度总结">2023-2024 wujiangbian的电子产品年度总结</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n4"><a class="md-toc-inner" href="#一闲鱼">一、闲鱼</a></span><span role="listitem" class="md-toc-item md-toc-h4" data-ref="n5"><a class="md-toc-inner" href="#11-掌机系列">1.1 掌机系列</a></span><span role="listitem" class="md-toc-item md-toc-h5" data-ref="n7"><a class="md-toc-inner" href="#psp3000"><em>PSP3000</em></a></span><span role="listitem" class="md-toc-item md-toc-h5" data-ref="n10"><a class="md-toc-inner" href="#老小三"><em>老小三</em></a></span><span role="listitem" class="md-toc-item md-toc-h5" data-ref="n14"><a class="md-toc-inner" href="#gbasp"><em>GBASP</em></a></span><span role="listitem" class="md-toc-item md-toc-h5" data-ref="n17"><a class="md-toc-inner" href="#switch"><em>switch</em></a></span><span role="listitem" class="md-toc-item md-toc-h4" data-ref="n20"><a class="md-toc-inner" href="#12-数码3c">1.2 数码3C</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n47"><a class="md-toc-inner" href="#二淘宝">二、淘宝</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n60"><a class="md-toc-inner" href="#三京东">三、京东</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n78"><a class="md-toc-inner" href="#四拼多多">四、拼多多</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n104"><a class="md-toc-inner" href="#结语">结语</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n107"><a class="md-toc-inner" href="#最后祝大家新年快乐身体健康新的一年越来越有钱">最后祝大家新年快乐，身体健康，新的一年越来越有钱！！</a></span></p></div><h3 id='一闲鱼'><span>一、闲鱼</span></h3><h4 id='11-掌机系列'><span>1.1 掌机系列</span></h4><p><span>要说今年算是我正式开始玩掌机的一年，算是圆了小时候的梦想了。盘点一下今年买的掌机有</span><strong><span>PSP3000、老小三、GBASP、双系统switch</span></strong><span>，其中GBASP因为收来的机子屏幕老化严重又被我转手卖掉了。</span></p><h5 id='psp3000'><em><span>PSP3000</span></em></h5><p><img src="D:\xlog\markdown\1735645529905.jpg" referrerpolicy="no-referrer" alt="原机主安装的假面骑士游戏"></p><p><span>三月份的时候在闲鱼刷到一个老哥出他的日版PSP3000，问好之后320直接拿下，带两块索尼电池和一个配的港版盒子，拿到机子之后经过询问群里的大佬，发现我这好像还是一台官翻机，算是捡到了哈哈，总体来说成色相当不错，就是屏幕有点发黄（也算是PSP3000通病了，有个色彩空间不亏），拿来打一些galgame和音游都很不错（话说初音的音游还挺难，看来我只适合玩啪嗒砰了），还通过这个机器结识了我第一个认识的群友：太守，后面买的老小三也是询问了他的一些经验挑到的机子嘿嘿，教我怎么验机检查功能完好，在这很感谢他，也愿他考研成功！</span></p><h5 id='老小三'><em><span>老小三</span></em></h5><p><img src="D:\xlog\markdown\1735645529881.jpg" alt="可爱捏"  /></p><p><img src="D:\xlog\markdown\1735645529895.jpg" alt="1735645529895"  /></p><p><span>众所周知捡垃圾会上瘾，收掌机也是，三月初收到了属于我自己的第一台掌机之后，心痒痒的在闲鱼又蹲了几天，拿下了一台贴了痛贴的蓝色老小三，痛的是miku，很可爱哈哈，还带一个蜡笔小新的收纳包。在我还没有ns之前都是拿它玩的太鼓达人和宝可梦，可惜笔不是原装，短短一只，打起来很不方便（悲）；在太守的推荐下我还玩了魔鬼训练，挺有意思的嘿嘿，拿来给呆傻大学生锻炼大脑正合适；至于它的3d功能，拿回来没用过几次，角度限制太严重了，也不影响游戏体验就没开；拿到老小三才知道对着它话筒那个孔吹气，游戏图标还会转哈哈，很好玩。最后给它刷了在博van那找的主题，用的我最喜欢的宝可梦插图拼接加未白镇bgm。还在老小三上玩了动森，把春日影当作我的村歌了（）</span><a href='[试着用3ds演奏了《春日影》_哔哩哔哩bilibili](https://www.bilibili.com/video/BV1eZ421e7Yd/?spm_id_from=333.999.0.0&amp;vd_source=1486a996562ffc48852e8e119216f46e)'><span>请大家看烂活</span></a></p><h5 id='gbasp'><em><span>GBASP</span></em></h5><p><img src="D:\xlog\markdown\1735646633983.jpg" referrerpolicy="no-referrer" alt="实在是瞎眼的屏幕"></p><p><span>GBASP玩的实在是少，一方面是因为我小时候玩过的掌机就是GBASP，操作再熟悉不过了，收来纯粹是情怀，另一方面是这个原装屏实在是瞎眼睛...偏光膜一大片老化痕迹，还是在屏幕中间，成色也算不上好，为这个机子换个屏幕太亏，无奈出掉了。以后有价格合适的我可能会再收一个吧，GBASP让小时候的我知道原来还有星之卡比镜之迷宫这么有意思的游戏，算是我的启蒙机了，对我的意义还是很大的。</span></p><h5 id='switch'><em><span>switch</span></em></h5><p><span>随着ns换代的声音越来越多，我觉得可能适合收机子玩的时候到了，确定了我的需求和预算之后，在闲鱼蹲了好几天的我收到了一个日行续航版双系统的ns，900不带底座，对我这种贫穷大学生还是很不错的，玩玩宝可梦朱紫，也是赶上了第九世代的末班车。比我想象中大很多啊，尤其是把它跟我的其他掌机相比，就是个大板砖（各种意义上），就是手柄比较脆弱，收过来几个月后右手柄冲不上电了，网上查了一下应该是ns通病，排线弯的太厉害，脆了之后就断了，在pdd买了排线换上也是满血复活，又是一台好机子。</span></p><p><img src="D:\xlog\markdown\1735647767420.jpg" referrerpolicy="no-referrer" alt="最后来一张大合照"></p><h4 id='12-数码3c'><span>1.2 数码3C</span></h4><p><span>按时间顺序来算的话，今年买的数码产品依次是</span><strong><span>redmi ac2100路由器、redmi k20pro、小米手环4nfc版、kpw3、桌面充电站、小米平板4wifi版、联想m3500q小主机、绘王hc16</span></strong><span>。乖乖...不数不知道一数吓一跳啊，玩这些东西也让我在网上学到了好多新知识，折腾上瘾了这是。看了一下订单时间，发现都是收完掌机之后玩的，属于是无缝衔接了（）</span></p><p><strong><span>redmi ac2100路由器</span></strong></p><p><img src="D:\xlog\markdown\Screenshot_2024-12-31-23-00-02-538_com.taobao.idlefish.jpg" referrerpolicy="no-referrer" alt="闲鱼卖家那扒来的照片"></p><p><span>在朋友linsoap的推荐下，我给寝室装了路由器，在寝室室友每次打开电脑还要重新连接拨号的时候，我已经爽爽享受开机直连和寝室wifi了，科技改变生活啊（感叹）。拿到手当然少不了折腾环节，立马就装上了openwrt，但我找的固件版本太低了，而且是官方固件，根本没有啥好用的插件，又去找魔改插件，恩山有很多大佬的改版固件，ac2100尤其多。可不知道为啥，我刷新固件就报错，说不匹配我的openwrt版本，从breed重新开始刷，结果只能刷进我最开始用的那个固件，什么赛博贞操锁（），无奈之下只能自己装插件，在经历了换源、学会如何使用ssh调试、到处找解决依赖安装失败的方法之后，我以失败告终（悲），还是安不上openclash需要的依赖，感觉还是固件的问题。。倒是adguard home可以安装上，但我的路由器开始时不时崩溃，wifi也变差了并显示网络不可用，等有闲时间了我要四战openwrt（怒），把这些陈年老病解决一下。</span></p><p><strong><span>redmi k20pro</span></strong></p><p><img src="D:\xlog\markdown\1735657338422.jpg" referrerpolicy="no-referrer" alt="兔兔小特可爱捏"></p><p><span>先说结论，实用性优秀，泛用性优秀，颜值在线，总体属于超大杯（bushi）不知道大家有没有被阳光长跑折磨过，对我这个不爱运动的人来说，跑上一跑那是要把我累死在操场上啊www，这倒是其次，主要还是byd运动世界校园这个软件太tm操蛋了，怎么能做到这么多广告要这么多权限？？忍受不了这操蛋的软件，我就去跟linsoap吐槽，他就告诉我其实可以通过fakelocation来模拟跑步的，并用他已经root的k40成功实现了模拟跑步并且成绩有效 。</span></p><p><span>扯得有点远了，其实就是因为这件事让我有了想玩root机的想法，说干就干，我就开始物色我的新机。最后我锁定了这台真全面屏、升降摄像头、还有外星科技--3.5mm耳机孔的k20pro，8+256的配置，搭载一代神U骁龙855，拿来折腾绰绰有余。对于它的折腾还是不多说了，还是挺波折的，要不然这个博客怕是今天都写不完（）有空的话可能会把折腾它的过程写到博客上记录一下。总之我对它相当满意啊，是我很喜欢的一款电子产品（宣爱恋了这下）</span></p><p><strong><span>小米手环4nfc</span></strong></p><p><img src="D:\xlog\markdown\IMG_20241231_230306.jpg" referrerpolicy="no-referrer" alt="喵喵喵"></p><p><span>待机大王，续航的神，放一个月记起来了一看还有电，刷了小米社区的mc主题包和彩虹猫猫表盘，很可爱哈哈，就是解绑不了公交卡，卖家估计也是二手收来的，我也不用这个，所以影响不大。</span></p><p><strong><span>kindle paperwhite3</span></strong></p><p><img src="D:\xlog\markdown\屏幕截图 2024-12-31 231159.png" referrerpolicy="no-referrer" alt="由于东西在家里，所以配一张百度百科的图"></p><p><span>墨水屏的产品我一直有点心动，无奈价格太贵了，且收了我也不一定会看书，但在暑假了解了一下电纸书，我觉得kpw3就能满足我的绝大部分需求了，暑假在家收来给弟弟妹妹看书用，我收获了折腾的快乐，弟弟妹妹还能护眼看书，岂不美哉？kpw3拿在手上确实舒服，比我想象中轻得多，续航也顶。有点漏光但不是很明显，再搭配zlibrary，给家里人看书很舒适。本来想着不给这个机子越狱的，怕家里人不会用，但在kpw3上看pdf一言难尽...最后还是刷了，安了几个插件，让看书也更方便。</span></p><p><strong><span>桌面充电站</span></strong></p><p><img src="D:\xlog\markdown\IMG_20241231_230423.jpg" referrerpolicy="no-referrer" alt="很小一个，也不占地方"></p><p><span>电子产品越来越多，插头和数据线也不够用了，想着买个氮化镓充电器的，但linsoap给我推荐了一个东西叫开源充电站，去b站一看，很符合我的需求啊，而且闲鱼也有很多烟云大佬的项目复刻，80多双usb双typec，这不比大几百的氮化镓充电站香？除了手机之外我几乎用不上快充，所以我立马下单了这个充电站，挺不错的，很推荐。</span></p><p><strong><span>小米平板4wifi版</span></strong></p><p><img src="D:\xlog\markdown\IMG_20241231_230503.jpg" referrerpolicy="no-referrer" alt="8寸够我用了"></p><p><span>除了1080p和双扬声器在同一侧之外，我对它都挺满意的，不指望它打啥游戏了，搭配串流还是很香的。前一段时间成为了我的音游启动器，虽然刷新率不高但我技术也一般够用了。</span></p><p><strong><span>联想m3500q小主机</span></strong></p><p><img src="D:\xlog\markdown\IMG_20241231_230524.jpg" referrerpolicy="no-referrer" alt="等我考完试狠狠玩弄你（怒）"></p><p><span>迄今为止为了折腾花了最多钱的产品。只有dp和vga接口让没有显示器的我到现在都没见到它的主页面www，买各种各样的线、转接头、采集卡，希望最后能折腾好它玩上nas吧。</span></p><p><strong><span>绘王hc16</span></strong></p><p><img src="D:\xlog\markdown\Screenshot_2024-12-31-23-15-19-800_com.taobao.idlefish-edit.jpg" referrerpolicy="no-referrer" alt="闲鱼卖家的照片，东西我还没拿到"></p><p><span>心血来潮买来的产品，之前linsoap用数位板开始学习画画，感觉还挺好玩的，前几天室友也说想拿平板画画玩，逛了一下闲鱼发现有好价，直接拿下了，还没到手，这下寒假回家又有东西玩了。</span></p><h3 id='二淘宝'><span>二、淘宝</span></h3><p><span>淘宝买的挺少的，基本都是在pdd和闲鱼买的，也就双十一看的比较多，毕竟我钱包空空（悲）淘宝今年买过的电子产品有：</span><strong><span>美的空气炸锅KZE5059、声音记忆sm1lite、水月雨竹2、KZ传奇Saga、iqoo z9 turbo</span></strong><span>。其中空气炸锅是帮我妈买的，三个耳机全退了，手机是帮我爸买的。好家伙，这是啥都没买到啊（）</span></p><p><strong><span>美的空气炸锅KZE5059</span></strong></p><p><img src="D:\xlog\markdown\Screenshot_2024-12-31-23-16-55-706_com.taobao.taobao-edit.jpg" referrerpolicy="no-referrer" alt="人不在家，商品图凑吧"></p><p><span>挺好用的，就是第一次用空气炸锅，呼呼响吓我一跳，有时候肚子饿了搞点薯条吃很爽。</span></p><p><strong><span>声音记忆sm1lite、水月雨竹2、KZ传奇Saga</span></strong></p><p><img src="D:\xlog\markdown\Screenshot_2024-12-31-23-16-31-420_com.taobao.taobao-edit.jpg" referrerpolicy="no-referrer" alt="假的，方的带着真的硌得慌"></p><p><img src="D:\xlog\markdown\Screenshot_2024-12-31-23-16-09-660_com.taobao.taobao-edit.jpg" referrerpolicy="no-referrer" alt="真的太重力"></p><p><img src="D:\xlog\markdown\Screenshot_2024-12-31-23-15-53-971_com.taobao.taobao-edit.jpg" referrerpolicy="no-referrer" alt="平平无奇"></p><p><span>这三个就放一起说了，三个价格一样，都是99，sm1lite塑料腔体真的挺糊的，高情商叫适合睡觉的时候听，温和不刺耳，低情商就是糊；水月雨竹2：声音表现不错，就是金属腔体太沉了，冬天还冰耳朵，看网上说这个表面的漆面还容易脱落，想了想还是退了；kzsaga刚上耳确实不错，尤其是自带的塞子比前两个耳机自带的塞子舒服多了，低音也在线，但是带了几天有个致命的问题：接上我的小米平板4底噪声音特别大...直接影响音质的那种，无奈也是退掉了。</span></p><p><strong><span>iqoo z9 turbo</span></strong></p><p>&nbsp;</p><p><span>由于我爸想换手机，且他的手机是vivo的，我最后选择了这台手机，6000mah大电池加80w快充，屏幕素质也很不错，再加上淘宝百亿补贴顶配1790就能拿下，算是很香的了。上手体验了几天感觉还不错，给我爸装了李跳跳够用了。就是originos设置怎么这么多，我都要调晕了，还有originos 4怎么彻底关掉系统更新啊，我只想要稳定的系统www，竟然不能用替换更新包的方法彻底断掉，用adb调试的方法在4也不管用了害。</span></p><h3 id='三京东'><span>三、京东</span></h3><p><span>今年在京东买的电子产品有：</span><strong><span>海信r55、美的电风扇SAH35MKL、fiil gs lite开放式蓝牙耳机、fiil gs开放式蓝牙耳机、飞智冰原狼2、戴灵s800</span></strong><span>，其中两个开放式耳机退了。</span></p><p><strong><span>海信r55</span></strong></p><p><img src="D:\xlog\markdown\Screenshot_2024-12-31-23-17-50-884_com.jingdong.app.mall-edit.jpg" referrerpolicy="no-referrer" alt="提醒我该换电视了是吧"></p><p><span>过年回家才知道家里电视坏了，我妈想着新年新气象就让我买个新的，要不然过年家里来客人连个电视看都没有。看推荐的配置和参数最后买了这一款，说实话电视啥时候能把那破广告和该死的会员改一下，连地方台都不愿意给你看要你去广电开通是真黑心啊，要不是我怕我不在家折腾了电视到时候家里人又不会搞，我真的想好好调教一下，用的我窝火，配置确实不错，内置的系统就是屎。</span></p><p><strong><span>美的电风扇SAH35MKL</span></strong></p><p><img src="D:\xlog\markdown\Screenshot_2024-12-31-23-18-14-122_com.jingdong.app.mall-edit.jpg" referrerpolicy="no-referrer" alt="真没有很大风"></p><p><span>说实话是比较失望的，真没比我家十年前买的电风扇好多少，风扇盘比较小，最大风速也没有很大，属于是懒得退凑合用的产物了。</span></p><p><strong><span>fiil gs lite开放式蓝牙耳机、fiil gs开放式蓝牙耳机</span></strong></p><p><img src="D:\xlog\markdown\02a4e5287e882cd68f4799317ed8520b.jpg" referrerpolicy="no-referrer" alt="fiil gs lite"></p><p><img src="D:\xlog\markdown\787bd3f3c5ee7d300ad3cf7fee272225.jpg" referrerpolicy="no-referrer" alt="fiil gs"></p><p><span>这两个放一起说，由于我的耳朵很小，我就准备尝试开放式耳机怎么样，带着太不安心了，而且那个耳机腔体老是抵到我耳屏（百度说叫这个），搞得我很不舒服，再一个就是音质太出乎意料了，出乎意料的差...让我实在是接受不了，买fiil gs 纯粹是想知道ldac有没有很大提升，结果就是差别几乎没有。综合价格考虑，我还是把兄弟俩退了。</span></p><p><strong><span>飞智冰原狼2</span></strong></p><p><img src="D:\xlog\markdown\1112cc835adcfae39b6ef67d70615606.jpg" referrerpolicy="no-referrer" alt="确实好看吧"></p><p><span>当时是买了这个和墨将烈风做对比，最后留下了它。首先冰原狼比墨将好看，我买的白色的墨将，和冰原狼一比显得太白了，不是很好看；其次是虽然墨将的无线充底座是一大卖点，但对我来说寝室桌子空间很捉襟见肘，太占地方了；最后是我更喜欢冰原狼2的圆盘方向键，而墨将是十字键，且冰原狼2的按键按着更爽。虽然墨将有线延迟低到吓人，但综合我的需求我还是留下了冰原狼2。</span></p><p><strong><span>戴灵s800</span></strong></p><p><img src="D:\xlog\markdown\06d5a4602477a2ecb6576e019e1fa470.jpg" referrerpolicy="no-referrer" alt="我室友吐槽这个颜色丑"></p><p><span>价格和音质都在我能接受范围内，洗澡的时候用很爽，运动的时候用也不用担心听不到外界的声音，就是戴久了还是会压得耳朵疼，适合洗澡运动的时候戴。</span></p><h3 id='四拼多多'><span>四、拼多多</span></h3><p><span>今年在拼多多买的电子产品有：</span><strong><span>新盟m87prov2、原道无迹一代、漫步者w820nb双金标版、出口转内销推特推荐人体工学鼠标、墨将烈风游戏手柄、31993芯片小尾巴、oppo enco air3、酷态科10000mah磁吸充电宝</span></strong><span>。什么嘛，也没有很多嘛（大雾）好吧其实是因为我主要是在pdd买配件，所以给了我一种pdd买了很多电子产品的感觉，真数一数的话大件没有很多。</span></p><p><strong><span>新盟m87prov2</span></strong></p><p><img src="D:\xlog\markdown\1735658582571.jpg" referrerpolicy="no-referrer" alt="可爱捏"></p><p><span>为了室友的睡眠质量，我特地挑的静音轴键盘，相当静音，用的水蜜桃轴。续航也不错，延迟不清楚，没特地感受过，给我的笔记本电脑用还是很不错的，没有数字小键盘对我来说影响不大，所以选了87阵列。</span></p><p><strong><span>原道无迹一代</span></strong></p><p><img src="D:\xlog\markdown\1735658506710--1230487620.jpg" referrerpolicy="no-referrer" alt="拿在手上塑料感廉价感拉满，没有拍的这么好看"></p><p><span>早知道，还得是原道（触发悔恨之泪）好吧抛开玩梗，这个东西也就听个响，腔体也是相当涨耳，但有线耳机我还是习惯有一个的，反正6块钱买不了吃亏买不了上当。</span></p><p><strong><span>漫步者w820nb双金标版</span></strong></p><p><img src="D:\xlog\markdown\1735658486056-1081215400.jpg" referrerpolicy="no-referrer" alt="好看"></p><p><span>好用，音质不错，降噪勉强够用，不是很夹头，续航一般但也没有特别夸张，保护的好点皮套也可以用几年的。</span></p><p><strong><span>出口转内销推特推荐人体工学鼠标</span></strong></p><p><img src="D:\xlog\markdown\1735658470183-933523340.jpg" referrerpolicy="no-referrer" alt="真挺不错，但好像没有卖的了，都是新货"></p><p><span>这个东西还真挺有性价比（），25块钱还有侧键，用起来除了滚轮会有点毛病，防滑垫贴的不准导致底下爱粘东西，本职工作做的挺好的，而且最近看发现老板又搞了一批新货哈哈，感兴趣的朋友可以去玩玩，搜出口老美鼠标应该就有了。</span></p><p><strong><span>墨将烈风游戏手柄</span></strong></p><p><img src="D:\xlog\markdown\1735658438585--550151045.jpg" referrerpolicy="no-referrer" alt="那就放张图吧"></p><p><span>前面在冰原狼2对比过了，就不多说了。</span></p><p><strong><span>31993芯片小尾巴</span></strong></p><p><img src="D:\xlog\markdown\1735658424489-960748213.jpg" referrerpolicy="no-referrer" alt="还可以"></p><p><span>我对hifi实在是没啥研究，是看b站有人捡垃圾推荐了这个，我就买了个玩玩，对我来说区别就是声音变大了（？）</span></p><p><strong><span>oppo enco air3</span></strong></p><p><img src="D:\xlog\markdown\1735658408551--1854197481.jpg" referrerpolicy="no-referrer" alt="这个开仓真的反人类"></p><p><span>还是没忍住买了tws，但号称佩戴舒适的oppo enco air3我戴起来也是涨耳朵，可能我只适合漫步者那种小腔体吧。</span></p><p><strong><span>酷态科10000mah磁吸充电宝</span></strong></p><p><img src="D:\xlog\markdown\1735658397022--1558722878.jpg" referrerpolicy="no-referrer" alt="长的还可以"></p><p><span>k60吸不牢（大哭），给手机壳家里个磁吸圈勉强可以吸上，电量也没有我想象那么耐用，只能说适合苹果用户吧。</span></p><h3 id='结语'><span>结语</span></h3><p><span>我竟然真的在跨年之前写完了...这一坐就是两三个小时，我还挺牛（）大概就是把这一年买过的电子产品写成了一个年度总结，也是我第一次用markdown写这么多东西，写到一半都不是很想写了...当然如果你能看到这也太牛了哈哈，谢谢你的观看呀</span></p><p>&nbsp;</p><h2 id='最后祝大家新年快乐身体健康新的一年越来越有钱'><span>最后祝大家新年快乐，身体健康，新的一年越来越有钱！！</span></h2><p>&nbsp;</p></div></div>
+</body>
+</html>
