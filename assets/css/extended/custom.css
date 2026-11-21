@@ -174,3 +174,11 @@ html[data-theme="dark"] body::before { opacity: 0.10; }
   .float-nav { right: 16px; bottom: 16px; }
   .comments-card { padding: 14px 12px; }
 }
+
+.entry-cover { text-align: center; }
+.entry-cover img {
+  max-height: 330px;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+}
