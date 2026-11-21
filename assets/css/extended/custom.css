@@ -146,3 +146,7 @@ html { scroll-behavior: smooth; }
   .header-nav { gap: 12px; padding: 8px 12px; }
   .menu { gap: 12px; }
 }
+
+.header-right { display: flex; align-items: center; gap: 22px; margin-left: auto; }
+.header-right .theme-toggle { display: inline-flex; align-items: center; padding: 4px; }
+@media (max-width: 720px) { .header-right { gap: 12px; } }
