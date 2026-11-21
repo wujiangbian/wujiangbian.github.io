@@ -31,11 +31,3 @@ window.addEventListener("scroll", function () {
   if (h) { h.classList.toggle("scrolled", window.scrollY > 8); }
 }, { passive: true });
 </script>
-<script>
-document.addEventListener("keydown", function (e) {
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-    e.preventDefault();
-    window.location.href = "/search/";
-  }
-});
-</script>
