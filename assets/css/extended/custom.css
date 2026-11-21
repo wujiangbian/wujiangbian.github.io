@@ -78,8 +78,8 @@ html { scroll-behavior: smooth; }
 }
 .float-nav button:hover { transform: translateY(-2px); }
 
-.logo a { font-weight: 700; }
-.logo img { border-radius: 50%; }
+.logo a { font-weight: 700; font-size: 19px; }
+.logo img { border-radius: 50%; width: 30px; height: 30px; object-fit: cover; border: 2px solid color-mix(in srgb, var(--border) 75%, transparent); }
 .header { transition: box-shadow 0.3s ease; }
 .header.scrolled {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
