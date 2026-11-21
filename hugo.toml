@@ -29,7 +29,7 @@ enableRobotsTXT = true
   [params.profileMode]
     enabled = true
     title = "wujiangbian"
-    subtitle = "博客重建中，文章会陆续搬回来。"
+    subtitle = "猫老吴在中国工作的天"
     imageUrl = "/avatar.jpg"
     imageWidth = 120
     imageHeight = 120
