@@ -148,3 +148,14 @@ html[data-theme="dark"] body::before { opacity: 0.10; }
   border: 1px solid rgba(255,255,255,0.35); background: rgba(255,255,255,0.10);
   color: #fff; font-size: 19px; line-height: 1; cursor: pointer;
 }
+
+.comments-card {
+  margin-top: 36px;
+  padding: 20px 22px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  background: color-mix(in srgb, var(--entry) 60%, transparent);
+  backdrop-filter: blur(10px) saturate(1.25);
+  -webkit-backdrop-filter: blur(10px) saturate(1.25);
+}
+.comments-card .giscus iframe { border: none; }

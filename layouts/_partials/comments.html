@@ -1,15 +1,36 @@
-<script src="https://giscus.app/client.js"
-        data-repo="wujiangbian/wujiangbian.github.io"
-        data-repo-id="R_kgDOV2zOGg"
-        data-category="Announcements"
-        data-category-id="DIC_kwDOV2zOGs4DLrJK"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="zh-CN"
-        crossorigin="anonymous"
-        async>
+<div class="comments-card">
+<script>
+(function () {
+  var darkTheme = "https://wujiangbian.github.io/giscus-dark.css";
+  var lightTheme = "https://wujiangbian.github.io/giscus-light.css";
+  function currentTheme() {
+    return document.documentElement.dataset.theme === "dark" ? darkTheme : lightTheme;
+  }
+  var s = document.createElement("script");
+  s.src = "https://giscus.app/client.js";
+  s.setAttribute("data-repo", "wujiangbian/wujiangbian.github.io");
+  s.setAttribute("data-repo-id", "R_kgDOV2zOGg");
+  s.setAttribute("data-category", "Announcements");
+  s.setAttribute("data-category-id", "DIC_kwDOV2zOGs4DLrJK");
+  s.setAttribute("data-mapping", "pathname");
+  s.setAttribute("data-strict", "0");
+  s.setAttribute("data-reactions-enabled", "1");
+  s.setAttribute("data-emit-metadata", "0");
+  s.setAttribute("data-input-position", "bottom");
+  s.setAttribute("data-theme", currentTheme());
+  s.setAttribute("data-lang", "zh-CN");
+  s.setAttribute("crossorigin", "anonymous");
+  s.async = true;
+  document.currentScript.parentNode.appendChild(s);
+  new MutationObserver(function () {
+    var iframe = document.querySelector("iframe.giscus-frame");
+    if (iframe) {
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme: currentTheme() } } },
+        "https://giscus.app"
+      );
+    }
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+})();
 </script>
+</div>
