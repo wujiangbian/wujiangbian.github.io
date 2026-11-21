@@ -1,6 +1,7 @@
 baseURL = "https://wujiangbian.github.io/"
 languageCode = "zh-cn"
 title = "wujiangbian 的博客"
+copyright = "© 2026 wujiangbian"
 theme = "PaperMod"
 paginate = 10
 enableRobotsTXT = true
@@ -8,6 +9,7 @@ enableRobotsTXT = true
 [params]
   env = "production"
   description = "wujiangbian 的个人博客"
+  images = ["/avatar.jpg"]
   author = "wujiangbian"
   defaultTheme = "auto"
   ShowReadingTime = true
