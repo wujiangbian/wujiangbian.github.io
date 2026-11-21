@@ -13,3 +13,15 @@
   els.forEach(function (e) { io.observe(e); });
 })();
 </script>
+<div class="float-nav">
+  <button type="button" id="to-top" aria-label="回到顶部" title="回到顶部">↑</button>
+  <button type="button" id="to-bottom" aria-label="回到底部" title="回到底部">↓</button>
+</div>
+<script>
+document.getElementById("to-top").addEventListener("click", function () {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+document.getElementById("to-bottom").addEventListener("click", function () {
+  window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+});
+</script>
