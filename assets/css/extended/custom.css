@@ -22,3 +22,19 @@ html { scroll-behavior: smooth; }
   .main, .profile_inner img { animation: none; }
   .reveal { opacity: 1; transform: none; transition: none; }
 }
+
+.post-single, .post-entry {
+  background: color-mix(in srgb, var(--entry) 76%, transparent);
+  backdrop-filter: blur(10px) saturate(1.25);
+  -webkit-backdrop-filter: blur(10px) saturate(1.25);
+}
+.post-single { border-radius: 12px; padding: 24px; }
+.post-content img {
+  max-height: 330px;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em auto;
+}
+
