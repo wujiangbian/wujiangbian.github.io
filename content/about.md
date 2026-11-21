@@ -11,7 +11,7 @@ wujiangbian，梦想是成为快乐火星猫，在地球艰难生存中。
 ## 在别处找到我
 
 - GitHub：[wujiangbian](https://github.com/wujiangbian)
-- NeoDB（书影音记录）：[wujiangbian](https://neodb.social/users/wujiangbian/)
+- NeoDB：[wujiangbian](https://neodb.social/users/wujiangbian/)
 
 ## 关于本站
 
