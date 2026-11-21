@@ -3,7 +3,7 @@
 &lt;h2 id="在别处找到我"&gt;在别处找到我&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;GitHub：&lt;a href="https://github.com/wujiangbian"&gt;wujiangbian&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;NeoDB（书影音记录）：&lt;a href="https://neodb.social/users/wujiangbian/"&gt;wujiangbian&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;NeoDB：&lt;a href="https://neodb.social/users/wujiangbian/"&gt;wujiangbian&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id="关于本站"&gt;关于本站&lt;/h2&gt;
 &lt;p&gt;用 Hugo + PaperMod 搭建，托管在 GitHub Pages。文章下面的评论区基于 GitHub Discussions，用 GitHub 账号就能留言。&lt;/p&gt;</description></item><item><title>让程序以管理员权限启动且不弹出 UAC提示窗口</title><link>https://wujiangbian.github.io/posts/run-as-admin-without-uac/</link><pubDate>Sun, 21 Dec 2025 00:16:06 +0800</pubDate><guid>https://wujiangbian.github.io/posts/run-as-admin-without-uac/</guid><description>&lt;p&gt;在 Windows 11 中，要让某个程序以管理员权限启动且&lt;strong&gt;不弹出 UAC（用户账户控制）提示窗口&lt;/strong&gt;，最安全且无需第三方软件的方法是利用 Windows 自带的 &lt;strong&gt;“任务计划程序” (Task Scheduler)&lt;/strong&gt; 创建一个特权任务，然后通过快捷方式来运行它。&lt;/p&gt;</description></item><item><title>如何使用git拉取项目并部署到自己的仓库（自存）</title><link>https://wujiangbian.github.io/posts/git-pull-and-deploy-to-own-repo/</link><pubDate>Sun, 14 Dec 2025 15:02:06 +0800</pubDate><guid>https://wujiangbian.github.io/posts/git-pull-and-deploy-to-own-repo/</guid><description>&lt;h2 id="拉取项目代码到本地"&gt;&lt;strong&gt;拉取项目代码到本地&lt;/strong&gt;&lt;/h2&gt;
