@@ -127,3 +127,24 @@ html { scroll-behavior: smooth; }
 @media (max-width: 720px) { .header-right { gap: 12px; } }
 
 html[data-theme="dark"] body::before { opacity: 0.10; }
+
+.post-content img { cursor: zoom-in; }
+.lightbox {
+  position: fixed; inset: 0; z-index: 200;
+  display: none; align-items: center; justify-content: center; flex-direction: column; gap: 12px;
+  background: rgba(10, 10, 12, 0.88);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.lightbox.open { display: flex; }
+.lightbox img {
+  max-width: 92vw; max-height: 86vh; width: auto; height: auto;
+  border-radius: 10px; box-shadow: 0 18px 60px rgba(0,0,0,0.5);
+  cursor: zoom-out;
+}
+.lightbox .lb-caption { color: #e8e8e8; font-size: 14px; max-width: 88vw; text-align: center; }
+.lightbox .lb-close {
+  position: absolute; top: 18px; right: 22px;
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.35); background: rgba(255,255,255,0.10);
+  color: #fff; font-size: 19px; line-height: 1; cursor: pointer;
+}
