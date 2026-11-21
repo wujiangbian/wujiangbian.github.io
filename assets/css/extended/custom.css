@@ -1,0 +1,9 @@
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("/bg.jpg") center / cover no-repeat;
+  opacity: 0.22;
+  z-index: -1;
+  pointer-events: none;
+}

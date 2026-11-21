@@ -16,13 +16,28 @@ enableRobotsTXT = true
   ShowBreadCrumbs = true
   ShowCodeCopyButtons = true
 
-  [params.homeInfoParams]
-    Title = "你好，我是 wujiangbian"
-    Content = "博客重建中，文章会陆续搬回来。"
+  [params.profileMode]
+    enabled = true
+    title = "wujiangbian"
+    subtitle = "博客重建中，文章会陆续搬回来。"
+    imageUrl = "/avatar.jpg"
+    imageWidth = 120
+    imageHeight = 120
+    imageTitle = "wujiangbian 的头像"
+    [[params.profileMode.buttons]]
+      name = "归档"
+      url = "/archives/"
+    [[params.profileMode.buttons]]
+      name = "搜索"
+      url = "/search/"
 
   [[params.socialIcons]]
     name = "github"
     url = "https://github.com/wujiangbian"
+  [[params.socialIcons]]
+    name = "neodb"
+    title = "NeoDB"
+    url = "https://neodb.social/users/wujiangbian/"
 
 [menu]
   [[menu.main]]
