@@ -109,4 +109,3 @@ git push
 ```
 
 
-![](https://ipfs.io/ipfs/QmcLY2DBQhrY1Pc2qUinBPRcZTojj4u4y1xiJqKT9Fjdfz)
