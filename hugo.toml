@@ -71,3 +71,7 @@ enableRobotsTXT = true
 [outputs]
   home = ["HTML", "RSS", "JSON"]
 
+
+[languages]
+  [languages."zh-cn"]
+    hasCJKLanguage = true
