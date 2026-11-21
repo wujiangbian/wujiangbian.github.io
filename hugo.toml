@@ -7,6 +7,7 @@ paginate = 10
 enableRobotsTXT = true
 
 [params]
+  dateFormat = "2006年1月2日"
   env = "production"
   comments = true
   disableScrollToTop = true
@@ -69,11 +70,6 @@ enableRobotsTXT = true
     name = "搜索"
     url = "/search/"
     weight = 20
-  [[menu.main]]
-    identifier = "tags"
-    name = "标签"
-    url = "/tags/"
-    weight = 30
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]

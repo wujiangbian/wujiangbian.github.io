@@ -1,4 +1,7 @@
 ---
+cover:
+    image: "/posts/electronics-2023-2024/cover-cow.jpg"
+    alt: "跳伞的牛"
 title: "2023-2024 wujiangbian的电子产品年度总结"
 date: 2025-01-08T16:16:29+08:00
 draft: false
