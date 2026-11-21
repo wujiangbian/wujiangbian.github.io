@@ -6,6 +6,9 @@ paginate = 10
 enableRobotsTXT = true
 
 [params]
+  [params.assets]
+    favicon = "/avatar.jpg"
+    apple_touch_icon = "/avatar.jpg"
   env = "production"
   description = "wujiangbian 的个人博客"
   author = "wujiangbian"
