@@ -22,6 +22,10 @@ enableRobotsTXT = true
     favicon32x32 = "/favicon-32x32.png"
     apple_touch_icon = "/apple-touch-icon.png"
 
+  [params.label]
+    icon = "/avatar.jpg"
+    iconHeight = 30
+
   [params.profileMode]
     enabled = true
     title = "wujiangbian"

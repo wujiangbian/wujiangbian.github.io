@@ -25,3 +25,9 @@ document.getElementById("to-bottom").addEventListener("click", function () {
   window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
 });
 </script>
+<script>
+window.addEventListener("scroll", function () {
+  var h = document.querySelector(".header");
+  if (h) { h.classList.toggle("scrolled", window.scrollY > 8); }
+}, { passive: true });
+</script>
