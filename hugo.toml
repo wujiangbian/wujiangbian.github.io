@@ -8,6 +8,7 @@ enableRobotsTXT = true
 
 [params]
   env = "production"
+  comments = true
   description = "wujiangbian 的个人博客"
   images = ["/avatar.jpg"]
   author = "wujiangbian"
