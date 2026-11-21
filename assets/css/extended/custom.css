@@ -24,7 +24,7 @@ html { scroll-behavior: smooth; }
 }
 
 .post-single, .post-entry {
-  background: color-mix(in srgb, var(--entry) 76%, transparent);
+  background: color-mix(in srgb, var(--entry) 60%, transparent);
   backdrop-filter: blur(10px) saturate(1.25);
   -webkit-backdrop-filter: blur(10px) saturate(1.25);
 }
@@ -49,7 +49,7 @@ html { scroll-behavior: smooth; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: color-mix(in srgb, var(--theme) 78%, transparent);
+  background: color-mix(in srgb, var(--theme) 62%, transparent);
   backdrop-filter: blur(10px) saturate(1.25);
   -webkit-backdrop-filter: blur(10px) saturate(1.25);
 }
@@ -67,7 +67,7 @@ html { scroll-behavior: smooth; }
   height: 42px;
   border-radius: 50%;
   border: 1px solid var(--border);
-  background: color-mix(in srgb, var(--entry) 70%, transparent);
+  background: color-mix(in srgb, var(--entry) 55%, transparent);
   backdrop-filter: blur(10px) saturate(1.25);
   -webkit-backdrop-filter: blur(10px) saturate(1.25);
   color: var(--primary);
