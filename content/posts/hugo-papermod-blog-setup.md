@@ -1,117 +1,80 @@
 ---
-title: "Hugo + PaperMod 搭建博客记录"
+title: "Hugo + PaperMod 博客UI定制记录"
 date: 2026-11-22T05:28:00+08:00
 draft: false
 ---
 
-本文记录 2026 年 11 月将博客从 xLog 迁移到 Hugo + PaperMod + GitHub Pages 的完整过程：双分支仓库结构、从零搭建步骤、内容迁移方法、发布流程，以及个人卡片主页、全站背景、毛玻璃卡片、悬浮胶囊顶栏、动画、浮动导航键、giscus 评论、日期中文化、图片灯箱、手机端适配等全部 UI 定制的实现方式与关键代码。文末附每三个月一次的源码备份方案和踩坑清单。照本文可从零重建出一个一模一样的站。
+本文记录博客（Hugo + PaperMod，https://wujiangbian.github.io ）的全部 UI 定制：改了哪些效果、每项写在哪个文件、关键代码是什么，照着可以复刻。全站以毛玻璃为统一语言：文章卡片、顶栏、评论区、浮动键共用同一套参数（背景色 60% 不透明度 + blur 10px），配低透明度全站背景图（浅色 0.22、深色 0.10）；主页用个人卡片模式并补回最新文章列表与浮现动画；顶栏改成悬浮胶囊，手机端收成一行；文章页做了图片限高与点击灯箱、日期中文化、中文阅读时间、giscus 评论透明主题适配。目录、文章封面、顶栏搜索框、标签菜单四项试过后弃用，记在文末。搭建、迁移、发布流程不在本文范围。
 
-## 一、总览
+## 一、定制入口
 
-- 框架：Hugo v0.170.1（静态站点生成器，单个二进制文件，不需要 Node 环境）
-- 主题：PaperMod，主题文件直接内嵌在仓库里（不走 git submodule，避免拉取时缺文件）
-- 托管：GitHub Pages，仓库 `wujiangbian/wujiangbian.github.io`
-- 站点地址：https://wujiangbian.github.io
-- 评论：giscus（基于 GitHub Discussions）
-- 备份：每三个月把源码打包存一份到 Google Drive，最多保留 4 份
+全部定制只动三个地方，不改主题源码，主题升级不受影响：
 
-仓库用两个分支：
+- `assets/css/extended/custom.css`：全部样式集中在这一个文件（下文简称 custom.css）
+- `layouts/` 覆盖模板：`_partials/header.html`（顶栏）、`_partials/footer.html`（页脚）、`_partials/comments.html`（评论）、`_partials/extend_footer.html`（页尾注入的 HTML 和脚本，下文简称 extend_footer）、`list.html`（首页）、`archives.html`（归档页）、`_default/about.html`（关于页）
+- `hugo.toml`：少量开关型配置，随项说明
 
-- `main` 分支：放 Hugo 构建好的成品网页，GitHub Pages 直接发布这个分支
-- `hugo-source` 分支：放 Hugo 源码（文章、配置、主题、图片源文件）
+毛玻璃的共用写法（custom.css，后文多处复用这组值）：
 
-分工：Pages 发布成品，源码单独存一个分支。改站时改源码、构建、把成品推回 main，互不干扰。
-
-## 二、从零搭建
-
-### 1. 建仓库
-
-在 GitHub 新建仓库，名字必须是 `你的用户名.github.io`（我的是 `wujiangbian.github.io`），这是 GitHub Pages 的固定规则。仓库设置里 Pages 的发布来源选 main 分支根目录。
-
-### 2. 准备 Hugo 源码
-
-本地建一个站点目录，结构如下（这就是 hugo-source 分支的内容）：
-
-```
-site/
-├── hugo.toml            # 全站配置，最重要的一个文件
-├── content/             # 文章（Markdown）
-│   ├── posts/           # 博文
-│   ├── archives.md      # 归档页
-│   ├── search.md        # 搜索页
-│   └── about.md         # 关于页
-├── layouts/             # 对主题的覆盖文件（见第五节）
-├── assets/css/extended/custom.css   # 全部自定义样式都写这里
-├── static/              # 静态文件，原样发布到网站根目录
-│   ├── avatar.jpg       # 头像
-│   ├── bg.jpg           # 全站背景图
-│   └── posts/           # 博文配图
-└── themes/PaperMod/     # 主题本体，整份拷进来
+```css
+background: color-mix(in srgb, var(--entry) 60%, transparent);
+backdrop-filter: blur(10px) saturate(1.25);
+-webkit-backdrop-filter: blur(10px) saturate(1.25);
 ```
 
-构建命令：
+## 二、整体外观
 
-```
-hugo --minify --cleanDestinationDir
-```
+### 2.1 全站背景图
 
-`--cleanDestinationDir` 必须加。不加的话，每次改样式生成的带指纹的 CSS 文件会一代代攒在输出目录里，曾经攒下 20 多个无用文件。
+绿字图放 `static/bg.jpg`，用 `body::before` 固定垫底（custom.css）：
 
-### 3. 基础配置（hugo.toml 要点）
-
-```toml
-baseURL = "https://wujiangbian.github.io/"
-languageCode = "zh-cn"
-title = "wujiangbian 的博客"
-copyright = "© 2026 wujiangbian"
-theme = "PaperMod"
-
-[params]
-  dateFormat = "2006年1月2日"     # 日期显示格式，见 5.9
-  comments = true                  # 开启评论（giscus）
-  disableScrollToTop = true        # 关掉主题自带的回到顶部键，见 5.7
-  ShowReadingTime = true
-  ShowShareButtons = false
-  ShowPostNavLinks = true
-  ShowBreadCrumbs = true
-  ShowCodeCopyButtons = true
-
-[languages."zh-cn"]
-  hasCJKLanguage = true            # 中文按字数统计阅读时间，见 5.9
+```css
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("/bg.jpg") center / cover no-repeat;
+  opacity: 0.22;
+  z-index: -1;
+  pointer-events: none;
+}
+html[data-theme="dark"] body::before { opacity: 0.10; }
 ```
 
-## 三、内容迁移（从 xLog 搬家）
+要点：深色模式靠 `html` 的 `data-theme` 属性判断，不是 class。背景图从 323KB 压到 158KB（宽 900、质量 62），低透明度垫底看不出画质损失。
 
-老博客在 xLog 上，共 3 篇文章。官方导出工具当时不可用，最后直接读 xLog 的公开数据库导出，得到每篇的 Markdown 全文。图片存在 IPFS 上大多已失效：能找回原图的替换，找不回的删掉坏图。
+### 2.2 毛玻璃卡片
 
-迁移后的 3 篇：
+```css
+.post-single, .post-entry {
+  background: color-mix(in srgb, var(--entry) 60%, transparent);
+  backdrop-filter: blur(10px) saturate(1.25);
+  -webkit-backdrop-filter: blur(10px) saturate(1.25);
+}
+.post-single { border-radius: 12px; padding: 24px; }
+```
 
-- 《2023-2024 wujiangbian的电子产品年度总结》— 失效的 33 张图后来用留存的照片逐张对位替换
-- 《如何使用git拉取项目并部署到自己的仓库（自存）》
-- 《让程序以管理员权限启动且不弹出 UAC提示窗口》
+浓度从 76% 试到 60% 定版。
 
-## 四、发布流程
+### 2.3 排版
 
-每次改完站都走一遍：
+主题里博文标题带斜体，去掉只留粗体，并定字号（custom.css）：
 
-1. 改源码（文章、配置、样式都在源码目录改）
-2. 本地构建：`hugo --minify --cleanDestinationDir`
-3. 把构建成品推到 main 分支
-4. 改过的源码文件推到 hugo-source 分支
-5. 等 40~60 秒（Pages 部署有延迟），打开网站验证
+```css
+.post-content h1, .post-content h2, .post-content h3,
+.post-content h4, .post-content h5, .post-content h6 { font-style: normal; }
+.post-content h3 { font-size: 28px; }
+.post-content h4 { font-size: 24px; }
+.post-content h5 { font-size: 20px; }
+```
 
-注意点：
+正文字号 18px 是主题默认值，未改动。
 
-- 图片等二进制文件与文本文件的推送方式不同。图片要单独传到 main 的对应路径和 hugo-source 的 `static/` 对应路径，各一份，缺一份重建时就会丢图。
-- 每次推送后要打开线上页面核对，不要只看推送成功。样式类改动还要核对线上 CSS 文件里确实有新规则。
+## 三、主页
 
-## 五、UI 定制全记录
+### 3.1 个人卡片
 
-以下每一项记录效果与实现方法，文件路径均相对源码根目录。
-
-### 5.1 主页：个人卡片 + 最新文章
-
-PaperMod 自带 profileMode（个人卡片模式），在 hugo.toml 里开启：
+开启主题自带的 profileMode（hugo.toml）：
 
 ```toml
 [params.profileMode]
@@ -129,154 +92,399 @@ PaperMod 自带 profileMode（个人卡片模式），在 hugo.toml 里开启：
     url = "/search/"
 ```
 
-卡片模式下首页默认不列文章。覆盖 `layouts/list.html`，在卡片下方加"最新文章"区块：遍历 posts 分区的文章，按条目卡片渲染（标题、摘要、日期）。条目带 `reveal` 类，配合 5.6 的动画下滑浮现。
+社交图标走主题的 `params.socialIcons` 配置（本文只放了 GitHub）。
 
-### 5.2 全站背景图
+### 3.2 最新文章列表
 
-背景是一张"感谢你的视奸"绿字图，放在 `static/bg.jpg`。给 body 加垫底伪元素，半透明显示（写在 custom.css）：
+卡片模式下首页默认不列文章。覆盖 `layouts/list.html`，在卡片下方加一段：遍历 posts 分区、按主题的条目卡片结构渲染（`layouts/list.html`）：
 
-```css
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: url("/bg.jpg") center / cover no-repeat;
-  opacity: 0.22;
-  z-index: -1;
-  pointer-events: none;
-}
-html[data-theme="dark"] body::before { opacity: 0.10; }  /* 深色模式单独调淡 */
+```html
+<div class="home-posts">
+  <h2 class="home-posts-title reveal">最新文章</h2>
+  {{- $pages := where site.RegularPages "Section" "eq" "posts" }}
+  {{- range $page := $pages }}
+  <article class="post-entry reveal">
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">{{ .Title }}</h2>
+    </header>
+    <div class="entry-content">
+      <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+    </div>
+    <footer class="entry-footer">
+      {{- partial "post_meta.html" . -}}
+    </footer>
+    <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+  </article>
+  {{- end }}
+</div>
 ```
 
-要点：PaperMod 切换深色模式是改 `html` 上的 `data-theme` 属性，不是加 class。背景图原图 323KB，后压到 158KB（宽 900、质量 62）：它只是 22% 透明度垫底，画质损失不可见，首页加载更快。
+条目上的 `reveal` 类配合 3.3 的浮现动画。
 
-### 5.3 毛玻璃卡片
+### 3.3 动画
 
-文章页和文章条目统一毛玻璃，与顶栏、评论区、浮动键共用同一套参数：
+CSS 在 custom.css：页面淡入、头像弹入、条目待浮现的初始状态：
 
 ```css
-.post-single, .post-entry {
-  background: color-mix(in srgb, var(--entry) 60%, transparent);
+html { scroll-behavior: smooth; }
+.main { animation: fadeUp 0.6s ease both; }
+.profile_inner img { animation: pop 0.7s ease both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes pop { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.post-entry { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.post-entry:hover { transform: translateY(-3px); }
+@media (prefers-reduced-motion: reduce) {
+  .main, .profile_inner img { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+```
+
+JS 在 extend_footer：IntersectionObserver 监听 `.reveal`，进入可视区加 `.visible`：
+
+```html
+<script>
+(function () {
+  var els = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window)) {
+    els.forEach(function (e) { e.classList.add("visible"); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add("visible"); io.unobserve(en.target); }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(function (e) { io.observe(e); });
+})();
+</script>
+```
+
+## 四、顶栏
+
+覆盖 `layouts/_partials/header.html` 重排结构：左侧 logo（头像+标题），右侧一个 `.header-right` 容器依次放菜单 `ul.menu`、社交图标 `.social-icons`、主题切换按钮 `#theme-toggle`。样式分四步（custom.css）：
+
+**第一步，胶囊本体** — sticky 悬浮、限宽居中、圆角边框阴影、毛玻璃底：
+
+```css
+.header {
+  position: sticky;
+  top: 12px;
+  z-index: 100;
+  width: min(1180px, calc(100% - 24px));
+  margin: 14px auto 0;
+  border: 1px solid color-mix(in srgb, var(--border) 65%, transparent);
+  border-radius: 18px;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.10);
+  background: color-mix(in srgb, var(--theme) 62%, transparent);
   backdrop-filter: blur(10px) saturate(1.25);
   -webkit-backdrop-filter: blur(10px) saturate(1.25);
 }
-.post-single { border-radius: 12px; padding: 28px 30px; }
+.header-nav { max-width: none; padding: 8px 12px 8px 18px; gap: 20px; }
+.header-right { display: flex; align-items: center; gap: 22px; margin-left: auto; }
 ```
 
-浓度从 76% 试到 60%，定版 60%。
+**第二步，logo 与图标**：
 
-### 5.4 正文排版
+```css
+.logo a { font-weight: 700; font-size: 19px; }
+.logo img { border-radius: 50%; width: 30px; height: 30px; object-fit: cover;
+  border: 2px solid color-mix(in srgb, var(--border) 75%, transparent); }
+.header .social-icons { display: flex; align-items: center; gap: 14px; padding: 0; }
+.header .social-icons a svg { width: 22px; height: 22px; transition: transform 0.2s ease; }
+.header .social-icons a:hover svg { transform: translateY(-2px); }
+```
 
-- 博文标题去斜体、只留粗体
-- 标题字号：一级 28px、二级 24px、三级 20px；正文 18px
-- 正文图片限高 330px、等比例缩小、居中：
+**第三步，菜单下划线动画** — 给菜单文字的 span 加伪元素，悬停时宽度从 0 展开：
+
+```css
+.menu { gap: 20px; }
+.menu li a span { position: relative; }
+.menu li a span::after {
+  content: "";
+  position: absolute; left: 0; bottom: -5px;
+  height: 2px; width: 0; border-radius: 2px;
+  background: var(--primary);
+  transition: width 0.25s ease;
+}
+.menu li a:hover span::after { width: 100%; }
+```
+
+**第四步，滚动阴影** — extend_footer 里监听滚动，超过 8px 给顶栏加 `.scrolled`：
+
+```html
+<script>
+window.addEventListener("scroll", function () {
+  var h = document.querySelector(".header");
+  if (h) { h.classList.toggle("scrolled", window.scrollY > 8); }
+}, { passive: true });
+</script>
+```
+
+```css
+.header { transition: box-shadow 0.3s ease; }
+.header.scrolled {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+```
+
+**手机端**（`@media (max-width: 640px)`）：标题文字用 `font-size: 0` 隐藏、只留头像（logo 的链接本来就包着头像，点头像即回首页），其余元素收紧间距挤进一行：
+
+```css
+@media (max-width: 640px) {
+  .header { width: calc(100% - 16px); margin-top: 8px; top: 8px; border-radius: 14px; }
+  .header-nav { flex-wrap: nowrap; padding: 8px 10px; }
+  .logo a { font-size: 0; white-space: nowrap; }
+  .logo img { width: 26px; height: 26px; }
+  .header-right { gap: 10px; flex-wrap: nowrap; }
+  .menu { gap: 13px; flex-wrap: nowrap; padding: 0; }
+  .menu li a { font-size: 14px; white-space: nowrap; }
+  .header .social-icons { gap: 8px; }
+  .header .social-icons a svg { width: 18px; height: 18px; }
+}
+```
+
+初版曾让菜单独占第二行居中，太占高度，弃用。
+
+## 五、文章页
+
+### 5.1 正文图片限高 + 点击灯箱
+
+限高（custom.css）：
 
 ```css
 .post-content img {
   max-height: 330px;
   width: auto;
-  margin: 0 auto;
-  cursor: zoom-in;   /* 配合 5.10 的灯箱 */
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em auto;
+  cursor: zoom-in;
 }
 ```
 
-试过给文章加左侧目录（TOC），效果不好，已回滚，不再加。
+灯箱层写在 extend_footer（HTML + CSS + JS 三件套）。HTML 是一个全屏遮罩，里面放图片、说明文字和关闭键：
 
-### 5.5 顶栏：悬浮胶囊导航
+```html
+<div class="lightbox" id="lightbox" role="dialog" aria-label="图片预览">
+  <button class="lb-close" id="lb-close" aria-label="关闭">✕</button>
+  <img id="lb-img" alt="">
+  <div class="lb-caption" id="lb-caption"></div>
+</div>
+```
 
-覆盖 `layouts/_partials/header.html`，按 Blowfish 风格重排：
+```css
+.lightbox {
+  position: fixed; inset: 0; z-index: 200;
+  display: none; align-items: center; justify-content: center; flex-direction: column; gap: 12px;
+  background: rgba(10, 10, 12, 0.88);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.lightbox.open { display: flex; }
+.lightbox img { max-width: 92vw; max-height: 86vh; border-radius: 10px; cursor: zoom-out; }
+.lightbox .lb-caption { color: #e8e8e8; font-size: 14px; max-width: 88vw; text-align: center; }
+```
 
-- 顶栏是悬浮的圆角胶囊：sticky 定位、距顶 12px、宽 `min(1180px, 100% - 24px)`、圆角 18px、毛玻璃底（`var(--theme)` 62% + blur 10px）、带边框和阴影
-- 左边：圆形头像（30×30，2px 描边）+ 加粗小字标题（19px）
-- 右边一组（间距 22px）：菜单、GitHub 图标、主题切换按钮
-- 菜单悬停时有下划线展开动画
-- 页面滚动超过 8px 后，JS 给顶栏加 `.scrolled` 类，阴影加深（JS 写在 extend_footer 里）
-- 顶栏原有的搜索框已删除（连同 Ctrl+K 快捷键脚本），搜索入口只保留主页卡片上的"搜索"按钮
-- 菜单内容：关于、归档、搜索。"标签"曾经有，因文章都没打标签、标签页为空，已撤掉
+JS 给所有正文图片绑点击：打开时把图片地址和 alt（配图说明）填进灯箱并锁定页面滚动；点遮罩、点 ✕、按 Esc 都能关：
 
-### 5.6 动画
+```html
+<script>
+(function () {
+  var lb = document.getElementById("lightbox");
+  var img = document.getElementById("lb-img");
+  var cap = document.getElementById("lb-caption");
+  function open(src, alt) {
+    img.src = src; img.alt = alt || "";
+    cap.textContent = alt || "";
+    cap.style.display = alt ? "block" : "none";
+    lb.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function close() {
+    lb.classList.remove("open");
+    img.src = "";
+    document.body.style.overflow = "";
+  }
+  document.querySelectorAll(".post-content img").forEach(function (el) {
+    el.addEventListener("click", function () { open(el.currentSrc || el.src, el.alt); });
+  });
+  lb.addEventListener("click", close);
+  document.getElementById("lb-close").addEventListener("click", close);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") { close(); } });
+})();
+</script>
+```
 
-写在 `layouts/_partials/extend_footer.html` 和 custom.css 里：
+### 5.2 日期与月份中文化
 
-- 页面载入时整体淡入
-- 头像弹入（带回弹的缩放）
-- 卡片悬停时微微上浮
-- 带 `.reveal` 类的元素用 IntersectionObserver 监听，进入可视区时加 `.visible` 类浮现（首页"最新文章"用此动画）
+文章日期（hugo.toml）：
 
-### 5.7 右下角浮动导航键
+```toml
+[params]
+  dateFormat = "2006年1月2日"
+```
 
-一对自制键（extend_footer 注入）：↑ 回到顶部、↓ 回到底部。54×54px 圆形、箭头 23px、两键间距 16px、离右和底各 30px，平滑滚动。毛玻璃参数与卡片统一，阴影用轻版（试过加深，已退回）。
+归档页月份改配置无效：主题模板用 Go 格式分组、月份名恒为英文。覆盖 `layouts/archives.html`，把分组格式从 `"January"` 改成 `"01"`，标题输出改成数字加"月"：
 
-曾出现三个圆叠在一起的 bug：PaperMod 自带一个"回到顶部"键（滚动后出现），与这对键挤在一起。解决办法是 hugo.toml 里 `disableScrollToTop = true` 关掉自带的。
+```html
+{{- range .Pages.GroupByDate "01" }}
+  <h2 class="archive-year-header">
+    {{ int .Key }}月
+  </h2>
+{{- end }}
+```
 
-### 5.8 评论区（giscus）
+（实际模板里年份、月份是两层分组，这里只示意改动点。）
 
-接入步骤：
+### 5.3 中文阅读时间
 
-1. 仓库设置里开启 Discussions
-2. 安装 giscus 应用到这个仓库（只授权这一个仓库，权限：Discussions 读写）
-3. 覆盖 `layouts/_partials/comments.html`，填入仓库的 repo-id 和分类 id（Announcements 分类），mapping 用 pathname，语言 zh-CN
+hugo.toml 的语言配置里开 CJK 统计：
 
-giscus 是外嵌 iframe，不能直接改内部 CSS，样式适配用它支持的自定义主题：
+```toml
+[languages."zh-cn"]
+  hasCJKLanguage = true
+```
 
-- 网站根目录自托管两个主题文件 `giscus-light.css`、`giscus-dark.css`（在官方主题基础上把背景色改成透明）
-- 评论区外包一层毛玻璃卡片（`.comments-card`，参数与博文卡片一致），iframe 透明底透出卡片的毛玻璃
-- 评论脚本改为动态创建：按当前 `html[data-theme]` 选明/暗主题；用 MutationObserver 监听主题切换，通过 postMessage 通知 giscus 换主题，不刷新页面
+不开时按单词数算，中文文章阅读时间明显偏短；开启后年度总结显示 12 分钟，符合实际字数。
 
-### 5.9 日期和月份中文化
+### 5.4 评论（giscus）
 
-分两处：
+前置：仓库 Settings 里开启 Discussions，安装 giscus 应用（只授权本仓库）。然后覆盖 `layouts/_partials/comments.html`：外层包毛玻璃卡片，脚本**动态创建**（不用 giscus 官网给的静态写法），为了能按当前主题选主题文件、并监听切换：
 
-1. 文章日期：hugo.toml 里 `dateFormat = "2006年1月2日"`，显示为"2025年1月8日"
-2. 归档页月份：PaperMod 归档模板用 Go 时间格式分组，月份名恒为英文，改配置无效。覆盖 `layouts/archives.html`，分组格式从 `"January"` 改为 `"01"`，显示时输出 `{{ int .Key }}月`，变为"12月""1月"
+```html
+<div class="comments-card">
+<script>
+(function () {
+  var darkTheme = "https://wujiangbian.github.io/giscus-dark.css";
+  var lightTheme = "https://wujiangbian.github.io/giscus-light.css";
+  function currentTheme() {
+    return document.documentElement.dataset.theme === "dark" ? darkTheme : lightTheme;
+  }
+  var s = document.createElement("script");
+  s.src = "https://giscus.app/client.js";
+  s.setAttribute("data-repo", "wujiangbian/wujiangbian.github.io");
+  s.setAttribute("data-repo-id", "R_kgDOV2zOGg");
+  s.setAttribute("data-category", "Announcements");
+  s.setAttribute("data-category-id", "DIC_kwDOV2zOGs4DLrJK");
+  s.setAttribute("data-mapping", "pathname");
+  s.setAttribute("data-theme", currentTheme());
+  s.setAttribute("data-lang", "zh-CN");
+  s.setAttribute("crossorigin", "anonymous");
+  s.async = true;
+  document.currentScript.parentNode.appendChild(s);
+  new MutationObserver(function () {
+    var iframe = document.querySelector("iframe.giscus-frame");
+    if (iframe) {
+      iframe.contentWindow.postMessage(
+        { giscus: { setConfig: { theme: currentTheme() } } },
+        "https://giscus.app"
+      );
+    }
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+})();
+</script>
+</div>
+```
 
-中文阅读时间（年度总结显示 12 分钟）靠 hugo.toml 的 `hasCJKLanguage = true`。不开时中文按单词数统计，阅读时间会明显偏短。
+其中 repo-id 和 category-id 在 giscus.app 配置页生成配置时获得，换仓库要重新取。两个主题文件放 `static/` 自托管：在 giscus 官方 light / transparent_dark 主题基础上把背景改透明，这样 iframe 透出外层卡片的毛玻璃：
 
-### 5.10 图片灯箱
+```css
+.comments-card {
+  margin-top: 36px;
+  padding: 20px 22px;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--border) 55%, transparent);
+  background: color-mix(in srgb, var(--entry) 60%, transparent);
+  backdrop-filter: blur(10px) saturate(1.25);
+  -webkit-backdrop-filter: blur(10px) saturate(1.25);
+}
+```
 
-博文图片点击放大：extend_footer 注入全屏灯箱层 — 深色模糊背景、图片最大 92vw×86vh、显示图片的 alt 文字（配图说明）、点任意处或按 Esc 关闭、打开时锁定页面滚动。正文图片的 `cursor: zoom-in` 配合灯箱。
+## 六、零散部件
 
-### 5.11 关于页
+### 6.1 浮动导航键
 
-`content/about.md`，菜单第一位。使用自定义模板 `layouts/_default/about.html`，只渲染标题和正文：普通文章模板带日期、阅读时间和评论区，关于页不需要。front matter 里要写日期，否则搜索引擎的结构化数据里会出现 0001 年的假日期（页面不可见）。
+extend_footer 注入一对按钮 + 点击脚本（平滑滚动靠 `scroll-behavior: smooth` 或参数里的 behavior）：
 
-关于我文案："wujiangbian，梦想是成为快乐火星猫，在地球艰难生存中。"
+```html
+<div class="float-nav">
+  <button type="button" id="to-top" aria-label="回到顶部" title="回到顶部">↑</button>
+  <button type="button" id="to-bottom" aria-label="回到底部" title="回到底部">↓</button>
+</div>
+<script>
+document.getElementById("to-top").addEventListener("click", function () {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+document.getElementById("to-bottom").addEventListener("click", function () {
+  window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+});
+</script>
+```
 
-### 5.12 手机端适配
+```css
+.float-nav { position: fixed; right: 30px; bottom: 30px; z-index: 99;
+  display: flex; flex-direction: column; gap: 16px; }
+.float-nav button {
+  width: 54px; height: 54px; border-radius: 50%;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--entry) 60%, transparent);
+  backdrop-filter: blur(10px) saturate(1.25);
+  -webkit-backdrop-filter: blur(10px) saturate(1.25);
+  color: var(--primary); font-size: 23px; line-height: 1; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+.float-nav button:hover { transform: translateY(-2px); }
+```
 
-写在 custom.css 的 `@media (max-width: 640px)` 里：
+两个配套点：主题自带一个回到顶部键、会与这对键叠成三个圆，在 hugo.toml 里关掉：`disableScrollToTop = true`。手机端浮动键离边收至 16px（写在 640px 媒体查询里）。
 
-- 顶栏胶囊变窄变矮（左右各留 8px、圆角 14px）
-- 导航改两行：第一行头像标题 + 图标 + 主题键；菜单独占第二行、居中、字号 15px、项间距 26px
-- 右下角浮动键往里收（离边 16px）
-- 评论卡片内边距缩小
+### 6.2 关于页
 
-### 5.13 页脚
+`content/about.md`，菜单第一位。新建 `layouts/_default/about.html`，只渲染标题和正文 — 普通文章模板带日期、阅读时间、评论区，关于页都不要：
 
-覆盖 `layouts/_partials/footer.html`，删掉 "Powered by Hugo & PaperMod"，只留版权行（文案在 hugo.toml 的 `copyright` 里）。
+```html
+{{- define "main" }}
+<article class="post-single">
+  <header class="post-header">
+    <h1 class="post-title">{{ .Title }}</h1>
+  </header>
+  <div class="post-content md-content">
+    {{ .Content }}
+  </div>
+</article>
+{{- end }}
+```
 
-### 5.14 网站图标（favicon）
+front matter 要写日期，否则搜索引擎的结构化数据里会出现 0001 年假日期（页面上看不见）。文案："wujiangbian，梦想是成为快乐火星猫，在地球艰难生存中。"
 
-`params.assets.favicon` 直接指向头像文件 `/avatar.jpg`，换头像时标签页图标自动同步。另外用头像生成了 favicon.ico、favicon-16x16.png、favicon-32x32.png、apple-touch-icon.png 四个文件放在根目录。此前标签页无图标，原因是主题引用了两个不存在的 png 文件、浏览器优先用它们，补齐即恢复。换图标后本机仍不显示多为浏览器缓存，强刷（Ctrl+F5）即可。
+### 6.3 页脚
 
-### 5.15 封面图的试错（结论：不要封面）
+覆盖 `layouts/_partials/footer.html`，删掉 "Powered by Hugo & PaperMod" 那段，只留版权行；文案在 hugo.toml 顶层：`copyright = "© 2026 wujiangbian"`。
 
-给年度总结加过一张跳伞牛当封面，前后改了多版：封面图过大，加"最高 330px"限制（与正文图分开设置）；改为只在首页显示、文章内不显示；首页封面贴卡片左侧且不能撑大卡片（用绝对定位实现，卡片大小只由文字决定）。结论：封面是累赘，已彻底删除，图文件也从仓库清除。以后不再给文章加封面。
+### 6.4 网站图标（favicon）
 
-## 六、备份
+hugo.toml：
 
-- 每三个月备份一次：把 hugo-source 分支的全部源码打包成 zip
-- 存放位置：Google Drive 的 `muse/blog/backup/` 下，按日期建文件夹（如 `2026-11-22/`）
-- 最多保留 4 份，超出时从最早的一份开始删
+```toml
+[params.assets]
+  favicon = "/avatar.jpg"
+  favicon16x16 = "/favicon-16x16.png"
+  favicon32x32 = "/favicon-32x32.png"
+  apple_touch_icon = "/apple-touch-icon.png"
+```
 
-有源码备份 + 本文即可随时重建：新建仓库 → 源码放 hugo-source 分支 → 按第二节构建 → 成品推 main 分支 → 二进制图片补传 → 按第五节逐项核对 UI。
+主 favicon 直接指向头像文件，换头像自动同步；其余三个用头像生成、放根目录。此前标签页无图标，是因为主题引用了不存在的 16/32 png、浏览器优先用它们，补齐文件即恢复；换图标后本机不显示多为缓存，强刷即可。另外 `params.images = ["/avatar.jpg"]` 让分享预览图也用头像。
 
-## 七、踩坑清单
+## 七、试过又弃用的
 
-1. 构建不加 `--cleanDestinationDir`，旧样式文件会越攒越多
-2. 图片等二进制文件要传两个位置（main + hugo-source 的 static），只传一处会在重建时丢图
-3. 推送成功不等于上线，Pages 有 40~60 秒延迟，验证要等够时间再刷新
-4. 主题自带的回到顶部键会与自制浮动键叠加，用 `disableScrollToTop` 关掉
-5. 归档页月份中文化改配置无效，必须覆盖 archives 模板
-6. giscus 不能直接改样式，要用自定义主题文件 + 透明底 + 外层卡片
-7. 关于页这类页面记得手动给日期，避免结构化数据出现 0001 年
+- **文章目录（TOC）**：加过左侧目录，效果不好，完整回滚
+- **文章封面**：给年度总结加过封面，改了限高、只在首页显示、贴卡片左侧绝对定位多版，结论是累赘，已彻底删除（含仓库里的图文件）
+- **顶栏搜索框**：主题自带的已从 header.html 删除（连同 Ctrl+K 快捷键脚本），搜索入口只保留主页卡片上的"搜索"按钮
+- **"标签"菜单**：文章都没打标签、标签页为空，已从菜单撤掉
+
+## 八、关键数值速查
+
+背景不透明度 0.22 / 深色 0.10 ｜ 毛玻璃 60% + blur 10px saturate 1.25 ｜ 标题 28/24/20px ｜ 正文图限高 330px ｜ 顶栏距顶 12px、圆角 18px、宽上限 1180px ｜ 浮动键 54px、间距 16px、离边 30px ｜ 手机端断点 640px
